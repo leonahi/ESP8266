@@ -1,8 +1,8 @@
 import serial
 import time
 
-SSID = "Beetle"
-PWD = "area asus bangalore"
+SSID = "xxxxx"  # router name
+PWD = "xxxxx"  # router password
 
 IP = "api.thingspeak.com"
 PORT = "80"
@@ -28,6 +28,7 @@ def sendCommand(cmd, ack, delay=1):
             break
         time.sleep(.5)
         
+# send http request - REQUEST_PAGE and DEST_HOST is specific to destination
 def sendRequest(cmd, data, delay=1):
     REQUEST_PAGE = "/update?key=OUCPBKR9ZISMGJHY&field1={0}&headers=false".format(data)
     HTTP_REQUEST = "GET " + REQUEST_PAGE + " HTTP/1.1\r\nHost: " + DEST_HOST + "\r\n" + "\r\n\r\n"
@@ -61,8 +62,10 @@ def main():
     # Change Wifi mode = 1(station), 2(AP), 3(station and AP)
     sendCommand('AT+CWMODE=1', 'OK', 1)
     
+    # Connect to home router
     sendCommand('AT+CWJAP=' + '\"' + SSID + '\"' + ',' + '\"' + PWD + '\"', 'OK', 5)
     
+    # Check connect status
     sendCommand('AT+CWJAP=?', 'OK', 2)
     
     sendCommand('AT+CIPSTATUS', 'OK', 1)
